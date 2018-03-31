@@ -11,14 +11,14 @@ import shaders.StaticShader;
 public class MainGameLoop {
 
 	public static void main(String[] args) {
-		DisplayManager.createDisplay();
+		DisplayManager.createDisplay();  // Create window
 		
-		Loader loader  = new Loader();
-		Renderer renderer = new Renderer();
-		StaticShader shader = new StaticShader();
+		Loader loader  = new Loader();  // Create loader
+		Renderer renderer = new Renderer();  // Create renderer
+		StaticShader shader = new StaticShader();  // Create shader program
 		
 		float[] vertices = {
-			// Left bottom triangle
+			// Quad
 			-0.5f, 0.5f, 0f,  //V0
 			-0.5f, -0.5f, 0f, //V1
 			0.5f, -0.5f, 0f,  //V2
@@ -30,19 +30,19 @@ public class MainGameLoop {
 				3, 1, 2  // Bottom right triangle
 		};
 		
-		RawModel model = loader.loadToVao(vertices, indices);
+		RawModel model = loader.loadToVao(vertices, indices);  // Convert the list of vertices to a VAO model
 		
 		while(!Display.isCloseRequested()) {
-			// game logic
-			renderer.prepare();
-			shader.start();
-			renderer.render(model);
-			shader.stop();
-			DisplayManager.updateDisplay();
+			renderer.prepare();  // Clear the display before rendering
+			shader.start();  // Enable the shader
+			renderer.render(model);  // Render the model
+			shader.stop();  // Disable the shader now that the rendering is finished
+			DisplayManager.updateDisplay();  // Update the display to show what has been recently rendered
 		}
-		shader.cleanUp();
-		loader.cleanUp();
-		DisplayManager.closeDisplay();
+		
+		shader.cleanUp();  // Remove shader from memory
+		loader.cleanUp();  // Remove all VAOs/VBO/s from memory
+		DisplayManager.closeDisplay();  // Close the window
 
 	}
 

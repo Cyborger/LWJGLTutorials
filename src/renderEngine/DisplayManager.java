@@ -8,31 +8,31 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
 public class DisplayManager {
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
-	private static final int FPS_CAP = 120;
+	private static final int WIDTH = 1280;   // Width of window display
+	private static final int HEIGHT = 720;   // Height of window display
+	private static final int FPS_CAP = 120;  // Maximum frames per second
 	
 	public static void createDisplay() {
-		ContextAttribs attribs = new ContextAttribs(3,2);
-		attribs.withForwardCompatible(true);
-		attribs.withProfileCore(true);
+		ContextAttribs attribs = new ContextAttribs(3,2);  // Attribute settings that can passed to OpenGL
+		attribs.withForwardCompatible(true);               // Allow this program to run on anything 3.2 or above
+		attribs.withProfileCore(true);                     // Do not include deprecated functions
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("First Display");
+			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));  // Set dimensions of display
+			Display.create(new PixelFormat(), attribs);              // Create display, using default pixel format and the settings set above
+			Display.setTitle("First Display");                       // Set name of window
 		} catch (LWJGLException e) {
-			e.printStackTrace();
+			e.printStackTrace();  // If an error occurs, where is that error coming from
 		}
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+		GL11.glViewport(0, 0, WIDTH, HEIGHT);  // Tell OpenGL where on the display it should render
 	}
 	
 	public static void updateDisplay() {
-		Display.sync(FPS_CAP);
-		Display.update();
+		Display.sync(FPS_CAP);  // Restrict frames per second
+		Display.update();       // Update the display
 	}
 	
 	public static void closeDisplay() {
-		Display.destroy();
+		Display.destroy();  // Destroy the window
 	}
 }
