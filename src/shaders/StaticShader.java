@@ -11,5 +11,6 @@ public class StaticShader extends ShaderProgram{
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0,  "position");  // Connect the position of the vertices to the vertex shader
+		super.bindAttribute(1, "textureCoords");  // Connect the texture coords to the vertex shader
 	}
 }

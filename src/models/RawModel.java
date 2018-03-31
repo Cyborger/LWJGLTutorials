@@ -1,4 +1,4 @@
-package renderEngine;
+package models;
 
 public class RawModel {
 	private int vaoID;  // ID associated with this specific VAO in memory
