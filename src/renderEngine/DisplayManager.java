@@ -13,13 +13,13 @@ public class DisplayManager {
 	private static final int FPS_CAP = 120;  // Maximum frames per second
 	
 	public static void createDisplay() {
-		ContextAttribs attribs = new ContextAttribs(3,2);  // Attribute settings that can passed to OpenGL
-		attribs.withForwardCompatible(true);               // Allow this program to run on anything 3.2 or above
-		attribs.withProfileCore(true);                     // Do not include deprecated functions
+		ContextAttribs attribs = new ContextAttribs(3,2)  // Attribute settings that can passed to OpenGL
+				.withForwardCompatible(true)              // Allow this program to run on anything 3.2 or above
+				.withProfileCore(true);                   // Do not include deprecated functions
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));  // Set dimensions of display
-			Display.create(new PixelFormat(), attribs);              // Create display, using default pixel format and the settings set above
+			Display.create(new PixelFormat(), attribs);              // Create display using default pixel format the above attribs
 			Display.setTitle("First Display");                       // Set name of window
 		} catch (LWJGLException e) {
 			e.printStackTrace();  // If an error occurs, where is that error coming from

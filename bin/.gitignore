@@ -1,5 +1,6 @@
 /engineTester/
-/renderEngine/
 /shaders/
+/renderEngine/
+/entities/
+/toolbox/
 /textures/
-/models/
