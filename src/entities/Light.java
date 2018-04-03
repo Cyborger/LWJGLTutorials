@@ -3,8 +3,9 @@ package entities;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Light {
-	private Vector3f position;
-	private Vector3f color;
+	
+	private Vector3f position;  // Position determines what sides of objects will be illuminated
+	private Vector3f color;  // Hue of light
 	
 	public Light(Vector3f position, Vector3f color) {
 		this.position = position;

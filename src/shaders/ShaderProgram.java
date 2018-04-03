@@ -36,8 +36,6 @@ public abstract class ShaderProgram {
 		return GL20.glGetUniformLocation(programID, uniformName);  // Find location of variable so it can be updated
 	}
 	
-	
-	
 	public void start() {
 		GL20.glUseProgram(programID);  // Use this shader when rendering
 	}

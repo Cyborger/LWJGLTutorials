@@ -8,9 +8,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
 public class DisplayManager {
+	
 	private static final int WIDTH = 1280;   // Width of window display
 	private static final int HEIGHT = 720;   // Height of window display
-	private static final int FPS_CAP = 120;  // Maximum frames per second
+	private static final int FPS_CAP = 120;  // Maximum number of frames that can be rendered in one second
 	
 	public static void createDisplay() {
 		ContextAttribs attribs = new ContextAttribs(3,2)  // Attribute settings that can passed to OpenGL
@@ -24,7 +25,7 @@ public class DisplayManager {
 		} catch (LWJGLException e) {
 			e.printStackTrace();  // If an error occurs, where is that error coming from
 		}
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);  // Tell OpenGL where on the display it should render
+		GL11.glViewport(0, 0, WIDTH, HEIGHT);  // Tell OpenGL where on the display rendering should appear
 	}
 	
 	public static void updateDisplay() {

@@ -4,7 +4,6 @@ import textures.ModelTexture;
 
 public class TexturedModel {
 	
-
 	private RawModel rawModel;     // Contains the VAO
 	private ModelTexture texture;  // Contains the texture
 	

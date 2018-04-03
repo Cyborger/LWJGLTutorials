@@ -11,44 +11,47 @@ import models.RawModel;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.Renderer;
-import shaders.StaticShader;
+import terrain.Terrain;
 import textures.ModelTexture;
 
 public class MainGameLoop {
-
+	
 	public static void main(String[] args) {
-		DisplayManager.createDisplay();            // Create window
-		Loader loader  = new Loader();             // Create loader
-		StaticShader shader = new StaticShader();  // Create shader program
-		Renderer renderer = new Renderer(shader);        // Create renderer
+		DisplayManager.createDisplay();  // The window
 		
-		RawModel model = OBJLoader.loadObjModel("dragon", loader);     // Convert the list of vertices to a VAO model
-		ModelTexture texture = new ModelTexture(loader.loadTexture("stallTexture"));  // Load res/alistar.png as a texture
-		texture.setShineDamper(10);
-		texture.setReflectivity(1);
-		TexturedModel staticModel = new TexturedModel(model, texture);         // Combine the VAO model with the texture
+		Loader loader  = new Loader();  // Loads textures and VAOs
+		MasterRenderer renderer = new MasterRenderer();  // Renders objects to the display
 		
-		Entity entity = new Entity(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);
-		Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1, 1, 1));
+		RawModel model = OBJLoader.loadObjModel("dragon", loader);  // Load an obj file as a RawModel
+		ModelTexture texture = new ModelTexture(loader.loadTexture("stallTexture"));  // Load a png file as a ModelTexture
+		texture.setReflectivity(1);  // Set how reflective the texture is
+		texture.setShineDamper(10);  // Set how dampened the angle of reflection is
+		TexturedModel staticModel = new TexturedModel(model, texture);  // Combine the VAO model and texture into one
 		
-		Camera camera = new Camera();
+		Entity entity = new Entity(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);  // Create an entity from the staticModel
+		Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("alistar")));  // A wide piece of terrain
+		Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("alistar")));  // A second piece of terrain
+		Light light = new Light(new Vector3f(20000, 20000, 20000), new Vector3f(1, 1, 1));  // Illuminates objects
+		
+		Camera camera = new Camera();  // Determines what section of 3d space is rendered
+		
 		while(!Display.isCloseRequested()) {
-			entity.increaseRotation(0, 1, 0);
-			camera.move();
-			renderer.prepare();              // Clear the display before rendering
-			shader.start();                  // Enable the shader
-			shader.loadLight(light);
-			shader.loadviewMatrix(camera);
-			renderer.render(entity, shader);  // Render the model
-			shader.stop();                   // Disable the shader now that the rendering is finished
-			DisplayManager.updateDisplay();  // Update the display to show what has been recently rendered
+			entity.increaseRotation(0, 1, 0);  // Rotate entity on y axis
+			camera.handleInput();  // Move the camera with keyboard input
+			
+			// Set objects to be rendered
+			renderer.processTerrain(terrain);
+			renderer.processTerrain(terrain2);
+			renderer.processEntity(entity);
+			
+			renderer.render(light, camera);  // Render all objects
+			DisplayManager.updateDisplay();  // Update the display
 		}
 		
-		shader.cleanUp();  // Remove shader from memory
-		loader.cleanUp();  // Remove all VAOs/VBO/s from memory
-		
+		renderer.cleanUp();  // Free shader programs from memory
+		loader.cleanUp();  // Free all VAOs/VBO/s from memory
 		DisplayManager.closeDisplay();  // Close the window
 
 	}

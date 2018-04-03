@@ -1,8 +1,6 @@
 package renderEngine;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();      // Stores a list of all VBOs in memory
 	private List<Integer> textures = new ArrayList<Integer>();  // Store a list of all textures in memory
 	
-	public RawModel loadToVao(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
+	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();                        // Get a new empty VAO
 		bindIndicesBuffer(indices);                     // Create VBO with indices and place in VAO 
 		storeDataInAttributeList(0, 3, positions);      // Store the position in the VAO
@@ -39,12 +37,11 @@ public class Loader {
 		String filePath = "res/" + fileName + ".png";  // Create filepath to image
 		try {
 			texture = TextureLoader.getTexture("PNG", new FileInputStream(filePath));  // Load the texture from the file
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Failed to load texture, " + fileName + ".png");
+			System.exit(-1);
 		}
-		
 		int textureID = texture.getTextureID();  // Get ID of the texture
 		textures.add(textureID);                 // Add to list of textures in memory
 		return textureID;

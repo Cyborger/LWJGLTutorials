@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector3f;
 import models.TexturedModel;
 
 public class Entity {
+	
+	// An entity references a textured model but has its own position, scale, and rotation
 	private TexturedModel model;
 	private Vector3f position;
 	private float rotX, rotY, rotZ;
@@ -32,9 +34,6 @@ public class Entity {
 		this.rotZ += dz;
 	}
 	
-	public void increaseScale(float s) {
-		this.scale += s;
-	}
 	public TexturedModel getModel() {
 		return model;
 	}
@@ -82,7 +81,4 @@ public class Entity {
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
-	
-	
-	
 }
