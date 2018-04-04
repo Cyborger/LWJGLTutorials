@@ -50,12 +50,17 @@ public class EntityRenderer {
 		GL20.glEnableVertexAttribArray(2);  // Enable the normals for data reading
 		
 		ModelTexture texture = model.getTexture();
+		if (texture.isHasTransparency()) {
+			MasterRenderer.disableCulling();
+		}
+		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);  // Activate texture buffer for texture sampler
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());  // Set the texture to be current
 	}
 	
 	private void unbindTexturedModel() {
+		MasterRenderer.enableCulling();
 		GL20.glDisableVertexAttribArray(0);  // Disable the position VBO so data can no longer be retrieved
 		GL20.glDisableVertexAttribArray(1);   // Disable the texture coord VBO
 		GL20.glDisableVertexAttribArray(2);  // Disable the normals VBO

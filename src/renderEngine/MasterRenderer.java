@@ -23,6 +23,10 @@ public class MasterRenderer {
 	private static final float NEAR_PLANE = 0.1f;  // Start of view
 	private static final float FAR_PLANE = 1000;  // End of view
 	
+	private static final float SKY_RED = 0.125f;
+	private static final float SKY_BLUE = 1.0f;
+	private static final float SKY_GREEN = 0.7f;
+	
 	private Matrix4f projectionMatrix;  // Current projection matrix
 	
 	private StaticShader shader = new StaticShader();  // Create shader program
@@ -35,22 +39,32 @@ public class MasterRenderer {
 	private List<Terrain> terrains = new ArrayList<Terrain>();  // All terrains
 	
 	public MasterRenderer() {
-		GL11.glEnable(GL11.GL_CULL_FACE);  // Enables culling of faces
-		GL11.glCullFace(GL11.GL_BACK);  // Only cull faces that aren't facing the camera
+		enableCulling();
 		createProjectionMatrix();  // Determine distortion caused by perspective
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 	}
 	
+	public static void enableCulling() {
+		GL11.glEnable(GL11.GL_CULL_FACE);  // Enables culling of faces
+		GL11.glCullFace(GL11.GL_BACK);  // Only cull faces that aren't facing the camera
+	}
+	
+	public static void disableCulling() {
+		GL11.glDisable(GL11.GL_CULL_FACE);
+	}
+	
 	public void render(Light sun, Camera camera) {
 		prepare();
 		shader.start();
+		shader.loadSkyColor(SKY_RED, SKY_GREEN, SKY_BLUE);
 		shader.loadLight(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
 		shader.stop();
 
 		terrainShader.start();
+		terrainShader.loadSkyColor(SKY_RED, SKY_GREEN, SKY_BLUE);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainRenderer.render(terrains);
@@ -82,7 +96,7 @@ public class MasterRenderer {
 	
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glClearColor(1, 0, 0, 1);           // Set the color for clearing the display
+		GL11.glClearColor(SKY_RED, SKY_GREEN, SKY_BLUE, 1);           // Set the color for clearing the display
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);  // Clear the display
 	}
 	
