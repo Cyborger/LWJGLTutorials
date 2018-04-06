@@ -63,6 +63,10 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, value);  // Change the given uniform location to equal a float
 	}
 	
+	protected void loadInt(int location, int value) {
+		GL20.glUniform1i(location, value);  // Change the given uniform location to equal a float
+	}
+	
 	protected void loadVector(int location, Vector3f vector) {
 		GL20.glUniform3f(location,  vector.x, vector.y, vector.z);  // Change the given uniform location to equal a 3d vector
 	}
